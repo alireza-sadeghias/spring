@@ -1,7 +1,7 @@
 package com.alireza.sadeghi.springboot.controller;
 
 
-import com.alireza.sadeghi.springboot.data.OrderRepository;
+import com.alireza.sadeghi.springboot.repository.OrderRepository;
 import com.alireza.sadeghi.springboot.domain.TacoOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @SessionAttributes("tacoOrder")
@@ -38,6 +39,7 @@ public class OrderController {
         if(errors.hasErrors()){
             return "orderForm";
         }
+        order.setPlacedAt(new Date());
         orderRepository.save(order);
         log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
