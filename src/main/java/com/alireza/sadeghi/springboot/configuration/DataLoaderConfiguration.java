@@ -9,8 +9,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class DataLoaderConfiguration {
 
     private IngredientRepository repo;
@@ -22,6 +24,7 @@ public class DataLoaderConfiguration {
 
     @Bean
     public ApplicationRunner dataLoaderAr(){
+        System.out.println("######################################");
         log.info("ar data loader");
         return args -> {
             repo.save(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
@@ -39,6 +42,7 @@ public class DataLoaderConfiguration {
 
     @Bean
     public CommandLineRunner dataLoaderClr(){
+        System.out.println("######################################");
         log.info("clr data loader");
         return args -> {
             repo.save(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));

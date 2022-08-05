@@ -1,21 +1,20 @@
 package com.alireza.sadeghi.springboot.controller;
 
+import com.alireza.sadeghi.springboot.domain.TacoUDT;
 import com.alireza.sadeghi.springboot.repository.IngredientRepository;
 import com.alireza.sadeghi.springboot.domain.Ingredient;
 import com.alireza.sadeghi.springboot.domain.Taco;
 import com.alireza.sadeghi.springboot.domain.TacoOrder;
+import com.alireza.sadeghi.springboot.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,18 +27,23 @@ import static com.alireza.sadeghi.springboot.domain.Ingredient.Type;
 public class DesignTacoControllers {
 
     private final IngredientRepository ingredientRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public DesignTacoControllers(IngredientRepository ingredientRepository) {
+    public DesignTacoControllers(IngredientRepository ingredientRepository, OrderRepository orderRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.orderRepository = orderRepository;
     }
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Streamable.of(ingredientRepository.findAll()).toList();
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredientRepository.findAll().forEach(i -> ingredients.add(i));
+
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
-            model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+            model.addAttribute(type.toString().toLowerCase(),
+                    filterByType(ingredients, type));
         }
     }
 
@@ -64,15 +68,14 @@ public class DesignTacoControllers {
 
     @PostMapping
     public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
+
         if (errors.hasErrors()) {
             return "design";
         }
-        log.info("tacoOrder:{}", tacoOrder);
 
-        tacoOrder.setPlacedAt(new Date());
-        tacoOrder.addTaco(taco);
-        log.info("Processing Taco:{}", taco);
+        tacoOrder.addTaco(new TacoUDT(taco.getName(), taco.getIngredients()));
 
+        orderRepository.save(tacoOrder);
         log.info("tacoOrder:{}", tacoOrder);
         return "redirect:/orders/current";
     }

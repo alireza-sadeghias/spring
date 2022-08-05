@@ -39,9 +39,7 @@ public class OrderController {
         if(errors.hasErrors()){
             return "orderForm";
         }
-        order.setPlacedAt(new Date());
         orderRepository.save(order);
-        log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
         return "redirect:/";
     }

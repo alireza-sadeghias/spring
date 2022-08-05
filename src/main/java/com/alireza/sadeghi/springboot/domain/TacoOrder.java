@@ -3,26 +3,30 @@ package com.alireza.sadeghi.springboot.domain;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import com.datastax.oss.driver.api.core.uuid.Uuids;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @ToString
-@Table
+@Table("orders")
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private Long id;
+    @PrimaryKey
+    private UUID id = Uuids.timeBased();
     private Date placedAt;
 
     @NotBlank(message="Delivery name is required")
@@ -43,8 +47,9 @@ public class TacoOrder implements Serializable {
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
-    private List<Taco> tacos = new ArrayList<>();
-    public void addTaco(Taco taco) {
+    @Column("tacos")
+    private List<TacoUDT> tacos = new ArrayList<>();
+    public void addTaco(TacoUDT taco) {
         this.tacos.add(taco);
     }
 }
