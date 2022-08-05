@@ -1,6 +1,6 @@
 spring:
     data:
-        cassandra:
-            keyspace-name: tacocloud
-            schema-action: recreate
-            local-datacenter: datacenter1
+        mongodb:
+            host: localhost
+            port: 27017
+            database: test

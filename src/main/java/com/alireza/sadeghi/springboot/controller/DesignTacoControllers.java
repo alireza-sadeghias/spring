@@ -1,6 +1,5 @@
 package com.alireza.sadeghi.springboot.controller;
 
-import com.alireza.sadeghi.springboot.domain.TacoUDT;
 import com.alireza.sadeghi.springboot.repository.IngredientRepository;
 import com.alireza.sadeghi.springboot.domain.Ingredient;
 import com.alireza.sadeghi.springboot.domain.Taco;
@@ -73,7 +72,7 @@ public class DesignTacoControllers {
             return "design";
         }
 
-        tacoOrder.addTaco(new TacoUDT(taco.getName(), taco.getIngredients()));
+        tacoOrder.addTaco(taco);
 
         orderRepository.save(tacoOrder);
         log.info("tacoOrder:{}", tacoOrder);

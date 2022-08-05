@@ -64,7 +64,9 @@
 <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-cassandra</artifactId>
+            <artifactId>
+                spring-boot-starter-data-mongodb
+            </artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
