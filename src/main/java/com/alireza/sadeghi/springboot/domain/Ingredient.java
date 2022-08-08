@@ -1,11 +1,15 @@
 package com.alireza.sadeghi.springboot.domain;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Data
-@Table
+@Entity
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
 public class Ingredient {
 
     @Id

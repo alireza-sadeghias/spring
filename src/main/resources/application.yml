@@ -1,4 +1,27 @@
+taco:
+    orders:
+        pageSize: 10
+    taco:
+        page-size:15
 spring:
     datasource:
         generate-unique-name: false
         name: tacocloud
+    data:
+        rest:
+            base-path: /data-api
+    security:
+        oauth2:
+            client:
+                registration:
+                    facebook:
+                        clientId: 1294461670684174
+                        clientSecret: a6d2f7dfeaf9352829d4f56a09a0c49c
+                        scope: email, public_profile
+logging:
+    file:
+        path: /var/logs/
+        name: TacoCloud.log
+    level:
+        root: TRACE
+        org.springframework.security: TRACE
